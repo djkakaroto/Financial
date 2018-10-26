@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Autor: Diego Lopes
+# E-mail: djkakaroto@gmail.com
+
 # Variaveis para estabelecer a URL de acesso a Calculadora do Cidadao + Metodo de correcao
 METODO="method=corrigirPelaSelic"
 CORRIGIR_SELIC="/corrigirPelaSelic.do?"
