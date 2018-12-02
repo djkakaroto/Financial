@@ -15,11 +15,11 @@ corrigir_valor <-
            method = c("SELIC", "IPC-A", "IGP-M", "INPC"),
            startDate = FALSE,
            endDate = TRUE) {
-    valor = converte_valor(value)
-    metodo = toupper(method)
-    dtInicial = startDate
-    dtFinal = endDate
-    URL_FULL = ""
+    valor <- converte_valor(value)
+    metodo <- toupper(method)
+    dtInicial <- validar_data(startDate)
+    dtFinal <- validar_data(endDate)
+    URL_FULL <- ""
 
     # ----------------------------------------- #
     # Valida metodo (indicador) e retorna a URL #
@@ -27,7 +27,7 @@ corrigir_valor <-
     if (is.character(metodo)) {
       if (pracma::strcmp("SELIC", metodo)) {
         urlBase <- retornaURL(metodo)
-        URL_FULL = paste(
+        URL_FULL <- paste(
           urlBase,
           "&dataInicial=",
           dtInicial,
@@ -39,6 +39,8 @@ corrigir_valor <-
         )
       } else if (pracma::strcmp("IPC-A", metodo)) {
         urlBase <- retornaURL(metodo)
+        dtInicial <- validar_data_indices(dtInicial)
+        dtFinal <- validar_data_indices(dtFinal, nMes = -2)
         URL_FULL = paste(
           urlBase,
           "&dataInicial=",
@@ -51,6 +53,8 @@ corrigir_valor <-
         )
       } else if (pracma::strcmp("IGP-M", metodo)) {
         urlBase = retornaURL(metodo)
+        dtInicial <- validar_data_indices(dtInicial)
+        dtFinal <- validar_data_indices(dtFinal, nMes = -2)
         URL_FULL = paste(
           urlBase,
           "&dataInicial=",
@@ -63,6 +67,8 @@ corrigir_valor <-
         )
       } else if (pracma::strcmp("INPC", metodo)) {
         urlBase = retornaURL(metodo)
+        dtInicial <- validar_data_indices(dtInicial)
+        dtFinal <- validar_data_indices(dtFinal, nMes = -2)
         URL_FULL = paste(
           urlBase,
           "&dataInicial=",
@@ -86,6 +92,7 @@ corrigir_valor <-
     # Tratamento do retorno (resposta)
     # read_html - package(rvest)
     library(rvest)
+    #print(URL_FULL)
     res <- xml2::read_html(URL_FULL)
     td <- res %>% rvest::html_nodes("td")
     fields <- rvest::html_text(td, trim = TRUE)
