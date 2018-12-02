@@ -4,9 +4,10 @@
 #' @export
 #'
 
-validar_data <- function( valDate = TRUE ) {
+validar_data <- function(valDate = TRUE) {
 
   dtFinal = ""
+
   # # ------------------------------------------ #
   # # Validation of the endDate variable is Date #
   if (is.null(valDate) || isTRUE(valDate)) {
